@@ -1,0 +1,18 @@
+{
+  "name": "tps-meter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "dxFFFFFF",
+  "license": "GNU",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ethersproject/experimental": "^5.7.0",
+    "@types/clui": "^0.3.1",
+    "clui": "^0.3.6",
+    "ethers": "5.4",
+    "solc": "^0.8.18",
+    "typescript": "^4.9.5"
+  }
+}
