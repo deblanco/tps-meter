@@ -22,7 +22,7 @@ function parseArgs() {
   const [, , rpc, privateKey, concurrentCalls] = process.argv;
   if (!rpc || !privateKey) {
     throw Error(`Missing parameters.
-    Usage "yarn start RPC_ENDPOINT PRIVATE_KEY OPT_CONCURRENT_CALLS"`);
+    Usage "yarn start RPC_ENDPOINT PRIVATE_KEY OPT_BATCH_SIZE"`);
   }
   return { rpc, privateKey, concurrentCalls };
 }

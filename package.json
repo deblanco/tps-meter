@@ -5,7 +5,8 @@
   "author": "dxFFFFFF",
   "license": "GNU",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc --incremental",
+    "start": "node build/index.js"
   },
   "dependencies": {
     "@ethersproject/experimental": "^5.7.0",
