@@ -2,6 +2,7 @@ import { TypedEvent } from "./EventEmitter";
 import { BlockEvent } from "./Types";
 import { Gauge } from "clui";
 import Config from "./config.json";
+import fs from "fs";
 
 type BlockSummary = BlockEvent & { instantTPS: number };
 
@@ -83,13 +84,20 @@ export class Summary {
   }
 
   private summary() {
-    console.log("--- SUMMARY ---");
-    console.log("-- Blocks Tracked:", this.blocks.length);
-    console.log("-- Avg Block Time:", this.getBlockTimeAvg());
-    console.log("-- Avg TPS:", this.getTPSAvg());
-    console.log("-- Max TPS:", this.getTPSmax());
-    console.log("-- Avg Txn per Block:", this.getTransactionAvg());
-    console.log("-- Max Txns in a Block", this.getMaxTxnInblock());
+    const text = `
+    --- SUMMARY ---
+    -- Blocks Tracked: ${this.blocks.length}
+    -- Avg Block Time: ${this.getBlockTimeAvg()}
+    -- Avg TPS: ${this.getTPSAvg()}
+    -- Max TPS: ${this.getTPSmax()}
+    -- Avg Txn per Block: ${this.getTransactionAvg()}
+    -- Max Txns in a Block ${this.getMaxTxnInblock()}
+    `;
+
+    console.log(text);
+    // write summary
+    fs.writeFileSync(`logs/${new Date().toISOString()}.txt`, text);
+
     process.exit();
   }
 }
