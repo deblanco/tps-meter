@@ -50,8 +50,14 @@ export class Summary {
 
   public getMaxTxnInblock() {
     return this.blocks.reduce(
-      (txns, i) => (i.transactionsCount > txns ? i.transactionsCount : txns),
-      0
+      (txns, i) =>
+        i.transactionsCount > txns.transactionsCount
+          ? {
+              transactionsCount: i.transactionsCount,
+              blockNumber: i.blockNumber,
+            }
+          : txns,
+      { transactionsCount: 0, blockNumber: 0 }
     );
   }
 
@@ -84,19 +90,27 @@ export class Summary {
   }
 
   private summary() {
-    const text = `
-    --- SUMMARY ---
-    -- Blocks Tracked: ${this.blocks.length}
-    -- Avg Block Time: ${this.getBlockTimeAvg()}
-    -- Avg TPS: ${this.getTPSAvg()}
-    -- Max TPS: ${this.getTPSmax()}
-    -- Avg Txn per Block: ${this.getTransactionAvg()}
-    -- Max Txns in a Block ${this.getMaxTxnInblock()}
-    `;
+    const maxTxns = this.getMaxTxnInblock();
 
-    console.log(text);
+    const body = {
+      blocksTracked: this.blocks.length,
+      avgBlockTime: this.getBlockTimeAvg(),
+      avgTPS: this.getTPSAvg(),
+      maxTPS: this.getTPSmax(),
+      avgTxnPerBlock: this.getTransactionAvg(),
+      maxTxnsInBlock: {
+        transactionsCount: maxTxns.transactionsCount,
+        blockNumber: maxTxns.blockNumber,
+      },
+    };
+
+    console.log("⚡️ ⚡️ ⚡️ Summary ⚡️ ⚡️ ⚡️");
+    console.log(JSON.stringify(body, null, 2));
     // write summary
-    fs.writeFileSync(`logs/${new Date().toISOString()}.txt`, text);
+    fs.writeFileSync(
+      `logs/${new Date().toISOString()}.json`,
+      JSON.stringify(body, null, 2)
+    );
 
     process.exit();
   }
